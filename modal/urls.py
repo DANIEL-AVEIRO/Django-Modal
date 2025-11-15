@@ -16,7 +16,7 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from app import views
@@ -27,4 +27,5 @@ urlpatterns = [
     path("product/create/", views.product_create, name="product_create"),
     path("product/update/<int:pk>/", views.product_update, name="product_update"),
     path("product/delete/<int:pk>/", views.product_delete, name="product_delete"),
+    re_path(r"^.*/$", views.page_not_found),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

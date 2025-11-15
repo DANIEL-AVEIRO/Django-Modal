@@ -35,3 +35,7 @@ def product_delete(request, pk):
     product = get_object_or_404(ProductModel, id=pk)
     product.delete()
     return redirect("/")
+
+
+def page_not_found(request):
+    return render(request, "page_not_found.html")

@@ -34,8 +34,10 @@
                             <td>{{ product.name }}</td>
                             <td>{{ product.price }}</td>
                             <td>
-                                <a href="#" class="btn btn-primary">Edit</a>
-                                <a href="#" class="btn btn-danger">Delete</a>
+                                <a href="#" data-bs-target="#updateModal_{{ product.id }}" data-bs-toggle="modal"
+                                    class="btn btn-primary">Edit</a>
+                                <a href="#" data-bs-target="#deleteModal_{{ product.id }}" data-bs-toggle="modal"
+                                    class="btn btn-danger">Delete</a>
                             </td>
                         </tr>
                         {% endfor %}
@@ -68,11 +70,66 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" name="create_submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    {% for product in products %}
+    <div class="modal fade" id="updateModal_{{ product.id }}" tabindex="-1"
+        aria-labelledby="updateModalLabel_{{ product.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <form class="modal-content" method="POST" action="{% url 'product_update' product.id  %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel_{{ product.id }}">Update Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="name_{{ product.id }}">Name</label>
+                        <input type="text" name="name" value="{{ product.name }}" id="name_{{ product.id }}"
+                            class="form-control" placeholder="Enter product name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="price_{{ product.id }}">Price</label>
+                        <input type="number" name="price" id="price_{{ product.id }}" value="{{ product.price }}"
+                            class="form-control" placeholder="Enter product price">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </div>
             </form>
         </div>
     </div>
+    {% endfor %}
+
+    <!-- Update Modal -->
+    {% for product in products %}
+    <div class="modal fade" id="deleteModal_{{ product.id }}" tabindex="-1"
+        aria-labelledby="deleteModalLabel_{{ product.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel_{{ product.id }}">Delete Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted">Are you sure to want to delete this product?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No</button>
+                    <button onclick="window.location.href='/product/delete/{{ product.id }}/'" type="button"
+                        class="btn btn-success">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 
     <script src="{% static 'js/bootstrap.js' %}"></script>
 </body>
